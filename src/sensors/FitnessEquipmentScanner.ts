@@ -3,10 +3,10 @@
  * Spec sheet: https://www.thisisant.com/resources/fitness-equipment-device/
  */
 
-import { updateFitnessEquipmentSensorState } from '../lib/UpdateState';
-import { AntPlusScanner } from './AntPlusScanner';
-import { FitnessEquipmentScanState } from './FitnessEquipmentScanState';
-import { FitnessEquipmentSensor } from './FitnessEquipmentSensor';
+import { updateFitnessEquipmentSensorState } from "../lib/UpdateState";
+import { AntPlusScanner } from "./AntPlusScanner";
+import { FitnessEquipmentScanState } from "./FitnessEquipmentScanState";
+import { FitnessEquipmentSensor } from "./FitnessEquipmentSensor";
 
 export class FitnessEquipmentScanner extends AntPlusScanner {
   protected deviceType() {

@@ -1,9 +1,9 @@
-import { Constants } from '../Constants';
-import { GarminStick2 } from '../GarminStick2';
-import { GarminStick3 } from '../GarminStick3';
-import { Messages } from '../Messages';
-import { AntPlusBaseSensor } from './AntPlusBaseSensor';
-import { AttachProps } from './BaseSensor';
+import { Constants } from "../Constants";
+import { GarminStick2 } from "../GarminStick2";
+import { GarminStick3 } from "../GarminStick3";
+import { Messages } from "../Messages";
+import { AntPlusBaseSensor } from "./AntPlusBaseSensor";
+import { AttachProps } from "./BaseSensor";
 
 export abstract class AntPlusSensor extends AntPlusBaseSensor {
   constructor(stick: GarminStick2 | GarminStick3) {
@@ -12,7 +12,7 @@ export abstract class AntPlusSensor extends AntPlusBaseSensor {
   }
 
   protected scan(): Promise<void> {
-    throw 'scanning unsupported';
+    throw "scanning unsupported";
   }
 
   protected attach(props: AttachProps) {

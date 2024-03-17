@@ -2,45 +2,45 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    'w3c-web-usb': true,
+    "w3c-web-usb": true
   },
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'airbnb',
-    'airbnb/hooks',
-    'prettier',
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "airbnb",
+    "airbnb/hooks",
+    "prettier"
   ],
-  ignorePatterns: ['node_modules/', 'dist/', 'spec/', '*.js'],
-  parser: '@typescript-eslint/parser',
+  ignorePatterns: ["node_modules/", "dist/", "spec/", "*.js"],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    sourceType: 'module',
+    sourceType: "module",
     ecmaVersion: 2020,
     ecmaFeatures: {
-      jsx: true,
+      jsx: true
     },
-    project: './tsconfig.json',
+    project: "./tsconfig.json"
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ["@typescript-eslint"],
   rules: {
-    '@typescript-eslint/no-floating-promises': ['error', { ignoreIIFE: true }],
-    'import/extensions': [
-      'error',
-      'ignorePackages',
+    "@typescript-eslint/no-floating-promises": ["error", { ignoreIIFE: true }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
       {
-        ts: 'never',
-        tsx: 'never',
-      },
+        ts: "never",
+        tsx: "never"
+      }
     ],
-    'import/prefer-default-export': ['off'],
-    'no-bitwise': ['off'],
+    "import/prefer-default-export": ["off"],
+    "no-bitwise": ["off"]
   },
   settings: {
-    'import/resolver': {
+    "import/resolver": {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
-    },
-  },
+        extensions: [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
 };

@@ -3,9 +3,9 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-speed-and-cadence/
  */
 
-import { updateSpeedCadenceSensorState } from '../lib/UpdateState';
-import { AntPlusSensor } from './AntPlusSensor';
-import { SpeedCadenceSensorState } from './SpeedCadenceSensorState';
+import { updateSpeedCadenceSensorState } from "../lib/UpdateState";
+import { AntPlusSensor } from "./AntPlusSensor";
+import { SpeedCadenceSensorState } from "./SpeedCadenceSensorState";
 
 export class SpeedCadenceSensor extends AntPlusSensor {
   static deviceType = 0x79;
@@ -19,12 +19,12 @@ export class SpeedCadenceSensor extends AntPlusSensor {
   public async attachSensor(channel: number, deviceID: number): Promise<void> {
     await super.attach({
       channel,
-      type: 'receive',
+      type: "receive",
       deviceID,
       deviceType: SpeedCadenceSensor.deviceType,
       transmissionType: 0,
       timeout: 255,
-      period: 8086,
+      period: 8086
     });
     this.state = new SpeedCadenceSensorState(deviceID);
   }
@@ -33,7 +33,7 @@ export class SpeedCadenceSensor extends AntPlusSensor {
 
   protected updateState(deviceId: number, data: DataView) {
     if (!this.state) {
-      throw new Error('SpeedCadenceSensor: not attached');
+      throw new Error("SpeedCadenceSensor: not attached");
     }
     this.state.DeviceID = deviceId;
     updateSpeedCadenceSensorState(this, this.state, data);

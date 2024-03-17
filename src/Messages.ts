@@ -1,4 +1,4 @@
-import { Constants } from './Constants';
+import { Constants } from "./Constants";
 
 export class Messages {
   static BUFFER_INDEX_MSG_LEN = 1;
@@ -38,23 +38,23 @@ export class Messages {
     return this.buildMessage(payload, Constants.MESSAGE_NETWORK_KEY);
   }
 
-  static assignChannel(channel: number, type = 'receive'): DataView {
+  static assignChannel(channel: number, type = "receive"): DataView {
     let payload: number[] = [];
     payload = payload.concat(this.intToLEHexArray(channel));
-    if (type === 'receive') {
+    if (type === "receive") {
       payload.push(Constants.CHANNEL_TYPE_TWOWAY_RECEIVE);
-    } else if (type === 'receive_only') {
+    } else if (type === "receive_only") {
       payload.push(Constants.CHANNEL_TYPE_ONEWAY_RECEIVE);
-    } else if (type === 'receive_shared') {
+    } else if (type === "receive_shared") {
       payload.push(Constants.CHANNEL_TYPE_SHARED_RECEIVE);
-    } else if (type === 'transmit') {
+    } else if (type === "transmit") {
       payload.push(Constants.CHANNEL_TYPE_TWOWAY_TRANSMIT);
-    } else if (type === 'transmit_only') {
+    } else if (type === "transmit_only") {
       payload.push(Constants.CHANNEL_TYPE_ONEWAY_TRANSMIT);
-    } else if (type === 'transmit_shared') {
+    } else if (type === "transmit_shared") {
       payload.push(Constants.CHANNEL_TYPE_SHARED_TRANSMIT);
     } else {
-      throw 'type not allowed';
+      throw "type not allowed";
     }
     payload.push(Constants.DEFAULT_NETWORK_NUMBER);
     return this.buildMessage(payload, Constants.MESSAGE_CHANNEL_ASSIGN);

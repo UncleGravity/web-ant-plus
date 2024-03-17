@@ -3,11 +3,11 @@
  * Spec sheet: https://www.thisisant.com/resources/heart-rate-monitor/
  */
 
-import { Page, PageState } from '../ant';
-import { updateHeartRateSensorState } from '../lib/UpdateState';
-import { AntPlusScanner } from './AntPlusScanner';
-import { HeartRateScanState } from './HeartRateScanState';
-import { HeartRateSensor } from './HeartRateSensor';
+import { Page, PageState } from "../ant";
+import { updateHeartRateSensorState } from "../lib/UpdateState";
+import { AntPlusScanner } from "./AntPlusScanner";
+import { HeartRateScanState } from "./HeartRateScanState";
+import { HeartRateSensor } from "./HeartRateSensor";
 
 export class HeartRateScanner extends AntPlusScanner {
   protected deviceType() {

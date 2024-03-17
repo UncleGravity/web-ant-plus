@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/heart-rate-monitor/
  */
 
-import { HeartRateSensorState } from './HeartRateSensorState';
+import { HeartRateSensorState } from "./HeartRateSensorState";
 
 export class HeartRateScanState extends HeartRateSensorState {
   Rssi?: number;

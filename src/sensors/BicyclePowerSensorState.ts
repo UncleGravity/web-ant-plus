@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-power/
  */
 
-import { Messages } from '../Messages';
+import { Messages } from "../Messages";
 
 export class BicyclePowerSensorState {
   constructor(deviceID: number) {

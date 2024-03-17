@@ -1,8 +1,8 @@
-import { Constants } from '../Constants';
-import { GarminStick2 } from '../GarminStick2';
-import { GarminStick3 } from '../GarminStick3';
-import { Messages } from '../Messages';
-import { AntPlusBaseSensor } from './AntPlusBaseSensor';
+import { Constants } from "../Constants";
+import { GarminStick2 } from "../GarminStick2";
+import { GarminStick3 } from "../GarminStick3";
+import { Messages } from "../Messages";
+import { AntPlusBaseSensor } from "./AntPlusBaseSensor";
 
 export abstract class AntPlusScanner extends AntPlusBaseSensor {
   protected abstract deviceType(): number;
@@ -21,15 +21,15 @@ export abstract class AntPlusScanner extends AntPlusBaseSensor {
   }
 
   public scan() {
-    return super.scan('receive');
+    return super.scan("receive");
   }
 
   protected attach(): Promise<void> {
-    throw new Error('attach unsupported');
+    throw new Error("attach unsupported");
   }
 
   protected send(): Promise<void> {
-    throw new Error('send unsupported');
+    throw new Error("send unsupported");
   }
 
   private decodeData(data: DataView) {
@@ -37,7 +37,7 @@ export abstract class AntPlusScanner extends AntPlusBaseSensor {
       data.byteLength <= Messages.BUFFER_INDEX_EXT_MSG_BEGIN + 3 ||
       !(data.getUint8(Messages.BUFFER_INDEX_EXT_MSG_BEGIN) & 0x80)
     ) {
-      console.warn('wrong message format', data.buffer);
+      console.warn("wrong message format", data.buffer);
       return;
     }
 

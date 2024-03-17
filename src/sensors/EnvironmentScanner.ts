@@ -23,10 +23,10 @@
  * SOFTWARE.
  */
 
-import { updateEnvironmentSensorState } from '../lib/UpdateState';
-import { AntPlusScanner } from './AntPlusScanner';
-import { EnvironmentScanState } from './EnvironmentScanState';
-import { EnvironmentSensor } from './EnvironmentSensor';
+import { updateEnvironmentSensorState } from "../lib/UpdateState";
+import { AntPlusScanner } from "./AntPlusScanner";
+import { EnvironmentScanState } from "./EnvironmentScanState";
+import { EnvironmentSensor } from "./EnvironmentSensor";
 
 export class EnvironmentScanner extends AntPlusScanner {
   protected deviceType() {

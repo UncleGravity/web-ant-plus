@@ -37,12 +37,12 @@ export class EventEmitter {
   emit(eventName: string | symbol, ...args: unknown[]) {
     const listeners = this.events.get(eventName);
     if (listeners === undefined) {
-      if (eventName === 'error') {
+      if (eventName === "error") {
         const error = args[0];
 
         if (error instanceof Error) throw error;
 
-        throw new Error('Unhandled error.');
+        throw new Error("Unhandled error.");
       }
       return false;
     }
@@ -101,8 +101,8 @@ export class EventEmitter {
     }
 
     // newListener
-    if (eventName !== 'newListener' && this.events.has('newListener')) {
-      this.emit('newListener', eventName, listener);
+    if (eventName !== "newListener" && this.events.has("newListener")) {
+      this.emit("newListener", eventName, listener);
     }
 
     // warn
@@ -115,7 +115,7 @@ export class EventEmitter {
          ${this.listenerCount(eventName)} ${eventName.toString()} listeners.
          Use emitter.setMaxListeners() to increase limit`
       );
-      warning.name = 'MaxListenersExceededWarning';
+      warning.name = "MaxListenersExceededWarning";
       console.warn(warning);
     }
 
@@ -126,7 +126,7 @@ export class EventEmitter {
     const { events } = this;
 
     // Not listening for removeListener, no need to emit
-    if (!events.has('removeListener')) {
+    if (!events.has("removeListener")) {
       if (arguments.length === 0) {
         this.events = new Map();
       } else if (events.has(eventName)) {
@@ -138,11 +138,11 @@ export class EventEmitter {
     // Emit removeListener for all listeners on all events
     if (arguments.length === 0) {
       for (const key of events.keys()) {
-        if (key !== 'removeListener') {
+        if (key !== "removeListener") {
           this.removeAllListeners(key);
         }
       }
-      this.removeAllListeners('removeListener');
+      this.removeAllListeners("removeListener");
       this.events = new Map();
       return this;
     }
@@ -174,8 +174,8 @@ export class EventEmitter {
     list.splice(index, 1);
     if (list.length === 0) this.events.delete(eventName);
 
-    if (events.has('removeListener')) {
-      this.emit('removeListener', eventName, listener);
+    if (events.has("removeListener")) {
+      this.emit("removeListener", eventName, listener);
     }
 
     return this;
@@ -206,7 +206,7 @@ export class EventEmitter {
       eventName,
       listener,
       wrapedListener: wrapper as unknown as WrappedFunction,
-      context: this,
+      context: this
     };
     const wrapped = wrapper.bind(wrapperContext) as unknown as WrappedFunction;
     wrapperContext.wrapedListener = wrapped;

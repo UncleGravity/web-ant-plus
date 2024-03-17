@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-speed-and-cadence/
  */
 
-import { Messages } from '../Messages';
+import { Messages } from "../Messages";
 
 export class SpeedCadenceSensorState {
   constructor(deviceID: number) {
@@ -33,7 +33,7 @@ export class SpeedCadenceSensorState {
     wheelCircumference: number
   ): {
     updatedState: SpeedCadenceSensorState;
-    resultType: 'cadence' | 'speed' | 'both' | 'none';
+    resultType: "cadence" | "speed" | "both" | "none";
   } {
     // get old state for calculating cumulative values
     const oldCadenceTime = this.CadenceEventTime;
@@ -110,12 +110,12 @@ export class SpeedCadenceSensorState {
       updatedState: this,
       resultType:
         cadenceDataChanged && speedDataChanged
-          ? 'both'
+          ? "both"
           : cadenceDataChanged
-          ? 'cadence'
-          : speedDataChanged
-          ? 'speed'
-          : 'none',
+            ? "cadence"
+            : speedDataChanged
+              ? "speed"
+              : "none"
     };
   }
 }

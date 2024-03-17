@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-import { EnvironmentSensorState } from './EnvironmentSensorState';
+import { EnvironmentSensorState } from "./EnvironmentSensorState";
 
 export class EnvironmentScanState extends EnvironmentSensorState {
   Rssi?: number;

@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/stride-based-speed-and-distance-monitor/
  */
 
-import { Messages } from '../Messages';
+import { Messages } from "../Messages";
 
 export class StrideSpeedDistanceSensorState {
   constructor(deviceId: number) {

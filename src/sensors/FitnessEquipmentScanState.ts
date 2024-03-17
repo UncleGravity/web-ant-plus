@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/fitness-equipment-device/
  */
 
-import { FitnessEquipmentSensorState } from './FitnessEquipmentSensorState';
+import { FitnessEquipmentSensorState } from "./FitnessEquipmentSensorState";
 
 export class FitnessEquipmentScanState extends FitnessEquipmentSensorState {
   Rssi?: number;

@@ -2,7 +2,7 @@ export type SendCallback = (result: boolean) => void;
 export enum PageState {
   INIT_PAGE,
   STD_PAGE,
-  EXT_PAGE,
+  EXT_PAGE
 }
 
 export type Page = {

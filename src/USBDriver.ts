@@ -1,7 +1,7 @@
-import { Constants } from './Constants';
-import { EventEmitter } from './lib/EventEmitter';
-import { Messages } from './Messages';
-import { BaseSensor } from './sensors/BaseSensor';
+import { Constants } from "./Constants";
+import { EventEmitter } from "./lib/EventEmitter";
+import { Messages } from "./Messages";
+import { BaseSensor } from "./sensors/BaseSensor";
 
 export class USBDriver extends EventEmitter {
   private deviceInUse: USBDevice[] = [];
@@ -16,14 +16,17 @@ export class USBDriver extends EventEmitter {
   maxChannels: number = 0;
   canScan: boolean = false;
 
-  constructor(private vendorId: number, private productId: number) {
+  constructor(
+    private vendorId: number,
+    private productId: number
+  ) {
     super();
     this.setMaxListeners(50);
   }
 
   private async getDevice() {
     const device = await navigator.usb.requestDevice({
-      filters: [{ vendorId: this.vendorId, productId: this.productId }],
+      filters: [{ vendorId: this.vendorId, productId: this.productId }]
     });
     return device;
   }
@@ -37,11 +40,11 @@ export class USBDriver extends EventEmitter {
     this.device = await this.getDevice();
     try {
       if (this.device === undefined) {
-        throw new Error('No device found');
+        throw new Error("No device found");
       }
       await this.device.open();
       if (this.device.configuration?.interfaces[0] === undefined) {
-        throw new Error('No interface found');
+        throw new Error("No interface found");
       }
       this.interface = this.device.configuration?.interfaces[0];
       await this.device.claimInterface(this.interface.interfaceNumber);
@@ -50,14 +53,14 @@ export class USBDriver extends EventEmitter {
     }
     this.deviceInUse.push(this.device);
     this.inEndpoint = this.interface?.alternate.endpoints.find(
-      (e) => e.direction === 'in'
+      (e) => e.direction === "in"
     );
     this.outEndpoint = this.interface?.alternate.endpoints.find(
-      (e) => e.direction === 'out'
+      (e) => e.direction === "out"
     );
 
     if (!this.inEndpoint || !this.outEndpoint) {
-      throw new Error('No endpoints found');
+      throw new Error("No endpoints found");
     }
     await this.reset();
 
@@ -89,9 +92,9 @@ export class USBDriver extends EventEmitter {
           this.leftover = undefined;
         }
         if (data.getUint8(0) !== 0xa4) {
-          throw 'SYNC missing';
+          throw "SYNC missing";
         }
-        if (result.status === 'ok') {
+        if (result.status === "ok") {
           const len = data.byteLength;
           let beginBlock = 0;
           while (beginBlock < len) {
@@ -127,12 +130,12 @@ export class USBDriver extends EventEmitter {
     this.interface = undefined;
     if (!this.device) return;
     this.device.close();
-    this.emit('shutdown');
+    this.emit("shutdown");
     const devIdx = this.deviceInUse.indexOf(this.device);
     if (devIdx >= 0) {
       this.deviceInUse.splice(devIdx, 1);
     }
-    this.emit('attach', this.device);
+    this.emit("attach", this.device);
     this.device = undefined;
   }
 
@@ -189,7 +192,7 @@ export class USBDriver extends EventEmitter {
   public async write(data: DataView) {
     try {
       if (this.outEndpoint === undefined) {
-        throw new Error('No out endpoint');
+        throw new Error("No out endpoint");
       }
       await this.device?.transferOut(this.outEndpoint?.endpointNumber, data);
     } catch (error) {
@@ -211,9 +214,9 @@ export class USBDriver extends EventEmitter {
       messageID === Constants.MESSAGE_CHANNEL_EVENT &&
       data.getUint8(4) === Constants.MESSAGE_NETWORK_KEY
     ) {
-      this.emit('startup', data);
+      this.emit("startup", data);
     } else {
-      this.emit('read', data);
+      this.emit("read", data);
     }
   }
 }
