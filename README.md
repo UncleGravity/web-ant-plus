@@ -17,7 +17,7 @@ npm install web-ant-plus
 #### Create USB stick GarminStick2 or GarminStick3
 
 ```typescript
-import { GarminStick3 } from 'web-ant-plus';
+import { GarminStick3 } from "web-ant-plus";
 const stick = new GarminStick3();
 ```
 
@@ -30,11 +30,11 @@ const hrSensor = new HeartRateSensor(stick);
 #### Attach events
 
 ```typescript
-hrSensor.on('hbData', function (data: HeartRateSensorState) {
+hrSensor.on("hbData", function (data: HeartRateSensorState) {
   console.log(data.DeviceID, data.ComputedHeartRate);
 });
 
-stick.on('startup', function () {
+stick.on("startup", function () {
   hrSensor.attach(0, 0);
 });
 ```
@@ -43,7 +43,7 @@ stick.on('startup', function () {
 
 ```typescript
 if (!stick.open()) {
-  console.log('Stick not found!');
+  console.log("Stick not found!");
 }
 ```
 
@@ -52,16 +52,16 @@ if (!stick.open()) {
 ```typescript
 const hrScanner = new HeartRateScanner(stick);
 
-hrScanner.on('hbData', function (data: HeartRateSensorState) {
+hrScanner.on("hbData", function (data: HeartRateSensorState) {
   console.log(data.DeviceID, data.ComputedHeartRate);
 });
 
-stick.on('startup', function () {
+stick.on("startup", function () {
   hrScanner.scan();
 });
 
 if (!stick.open()) {
-  console.log('Stick not found!');
+  console.log("Stick not found!");
 }
 ```
 

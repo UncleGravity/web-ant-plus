@@ -3,9 +3,9 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-speed/
  */
 
-import { updateSpeedSensorState } from '../lib/UpdateState';
-import { AntPlusSensor } from './AntPlusSensor';
-import { SpeedSensorState } from './SpeedSensorState';
+import { updateSpeedSensorState } from "../lib/UpdateState";
+import { AntPlusSensor } from "./AntPlusSensor";
+import { SpeedSensorState } from "./SpeedSensorState";
 
 export class SpeedSensor extends AntPlusSensor {
   static deviceType = 0x7b;
@@ -19,12 +19,12 @@ export class SpeedSensor extends AntPlusSensor {
   public async attachSensor(channel: number, deviceID: number): Promise<void> {
     await super.attach({
       channel,
-      type: 'receive',
+      type: "receive",
       deviceID,
       deviceType: SpeedSensor.deviceType,
       transmissionType: 0,
       timeout: 255,
-      period: 8086,
+      period: 8086
     });
     this.state = new SpeedSensorState(deviceID);
   }
@@ -33,7 +33,7 @@ export class SpeedSensor extends AntPlusSensor {
 
   protected updateState(deviceId: number, data: DataView) {
     if (!this.state) {
-      throw new Error('SpeedSensor: not attached');
+      throw new Error("SpeedSensor: not attached");
     }
     this.state.DeviceID = deviceId;
     updateSpeedSensorState(this, this.state, data);

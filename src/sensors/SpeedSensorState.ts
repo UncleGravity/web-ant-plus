@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-speed/
  */
 
-import { Messages } from '../Messages';
+import { Messages } from "../Messages";
 
 export class SpeedSensorState {
   constructor(deviceID: number) {
@@ -34,7 +34,7 @@ export class SpeedSensorState {
 
   BatteryVoltage?: number;
 
-  BatteryStatus?: 'New' | 'Good' | 'Ok' | 'Low' | 'Critical' | 'Invalid';
+  BatteryStatus?: "New" | "Good" | "Ok" | "Low" | "Critical" | "Invalid";
 
   Motion?: boolean;
 
@@ -81,23 +81,23 @@ export class SpeedSensorState {
         const batteryFlags = (batteryStatus & 0x70) >>> 4;
         switch (batteryFlags) {
           case 1:
-            this.BatteryStatus = 'New';
+            this.BatteryStatus = "New";
             break;
           case 2:
-            this.BatteryStatus = 'Good';
+            this.BatteryStatus = "Good";
             break;
           case 3:
-            this.BatteryStatus = 'Ok';
+            this.BatteryStatus = "Ok";
             break;
           case 4:
-            this.BatteryStatus = 'Low';
+            this.BatteryStatus = "Low";
             break;
           case 5:
-            this.BatteryStatus = 'Critical';
+            this.BatteryStatus = "Critical";
             break;
           default:
             this.BatteryVoltage = undefined;
-            this.BatteryStatus = 'Invalid';
+            this.BatteryStatus = "Invalid";
             break;
         }
         break;

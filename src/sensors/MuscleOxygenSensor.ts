@@ -3,11 +3,11 @@
  * Spec sheet: https://www.thisisant.com/resources/ant-device-profile-muscle-oxygen/
  */
 
-import { SendCallback } from '../ant';
-import { updateMuscleOxygenSensorState } from '../lib/UpdateState';
-import { Messages } from '../Messages';
-import { AntPlusSensor } from './AntPlusSensor';
-import { MuscleOxygenSensorState } from './MuscleOxygenSensorState';
+import { SendCallback } from "../ant";
+import { updateMuscleOxygenSensorState } from "../lib/UpdateState";
+import { Messages } from "../Messages";
+import { AntPlusSensor } from "./AntPlusSensor";
+import { MuscleOxygenSensorState } from "./MuscleOxygenSensorState";
 
 export class MuscleOxygenSensor extends AntPlusSensor {
   static deviceType = 0x1f;
@@ -15,12 +15,12 @@ export class MuscleOxygenSensor extends AntPlusSensor {
   public async attachSensor(channel: number, deviceID: number): Promise<void> {
     await super.attach({
       channel,
-      type: 'receive',
+      type: "receive",
       deviceID,
       deviceType: MuscleOxygenSensor.deviceType,
       transmissionType: 0,
       timeout: 255,
-      period: 8192,
+      period: 8192
     });
     this.state = new MuscleOxygenSensorState(deviceID);
   }
@@ -29,7 +29,7 @@ export class MuscleOxygenSensor extends AntPlusSensor {
 
   protected updateState(deviceId: number, data: DataView) {
     if (!this.state) {
-      throw new Error('MuscleOxygenSensor: not attached');
+      throw new Error("MuscleOxygenSensor: not attached");
     }
     this.state.DeviceID = deviceId;
     updateMuscleOxygenSensorState(this, this.state, data);
@@ -37,7 +37,7 @@ export class MuscleOxygenSensor extends AntPlusSensor {
 
   private _sendTimeCmd(cmd: number, cbk?: SendCallback) {
     if (this.channel === undefined) {
-      throw new Error('MuscleOxygenSensor: not attached');
+      throw new Error("MuscleOxygenSensor: not attached");
     }
     const now = new Date();
     const utc = Math.round(
@@ -52,7 +52,7 @@ export class MuscleOxygenSensor extends AntPlusSensor {
       (utc >> 0) & 0xff,
       (utc >> 8) & 0xff,
       (utc >> 16) & 0xff,
-      (utc >> 24) & 0xff,
+      (utc >> 24) & 0xff
     ];
     const msg = Messages.acknowledgedData(this.channel, payload);
     this.send(msg, cbk);

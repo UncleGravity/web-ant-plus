@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/fitness-equipment-device/
  */
 
-import { Messages } from '../Messages';
+import { Messages } from "../Messages";
 
 export class FitnessEquipmentSensorState {
   constructor(deviceID: number) {
@@ -23,14 +23,14 @@ export class FitnessEquipmentSensorState {
   SpinDownTime?: number;
 
   EquipmentType?:
-    | 'Treadmill'
-    | 'Elliptical'
-    | 'Reserved'
-    | 'Rower'
-    | 'Climber'
-    | 'NordicSkier'
-    | 'Trainer/StationaryBike'
-    | 'General';
+    | "Treadmill"
+    | "Elliptical"
+    | "Reserved"
+    | "Rower"
+    | "Climber"
+    | "NordicSkier"
+    | "Trainer/StationaryBike"
+    | "General";
 
   ElapsedTime?: number;
 
@@ -42,9 +42,9 @@ export class FitnessEquipmentSensorState {
 
   HeartRate?: number;
 
-  HeartRateSource?: 'HandContact' | 'EM' | 'ANT+';
+  HeartRateSource?: "HandContact" | "EM" | "ANT+";
 
-  State?: 'OFF' | 'READY' | 'IN_USE' | 'FINISHED';
+  State?: "OFF" | "READY" | "IN_USE" | "FINISHED";
 
   CycleLength?: number;
 
@@ -76,7 +76,7 @@ export class FitnessEquipmentSensorState {
 
   TrainerStatus?: number;
 
-  TargetStatus?: 'OnTarget' | 'LowSpeed' | 'HighSpeed';
+  TargetStatus?: "OnTarget" | "LowSpeed" | "HighSpeed";
 
   WheelTicks?: number;
 
@@ -157,28 +157,28 @@ export class FitnessEquipmentSensorState {
         );
         switch (equipmentTypeBF & 0x1f) {
           case 19:
-            this.EquipmentType = 'Treadmill';
+            this.EquipmentType = "Treadmill";
             break;
           case 20:
-            this.EquipmentType = 'Elliptical';
+            this.EquipmentType = "Elliptical";
             break;
           case 21:
-            this.EquipmentType = 'Reserved';
+            this.EquipmentType = "Reserved";
             break;
           case 22:
-            this.EquipmentType = 'Rower';
+            this.EquipmentType = "Rower";
             break;
           case 23:
-            this.EquipmentType = 'Climber';
+            this.EquipmentType = "Climber";
             break;
           case 24:
-            this.EquipmentType = 'NordicSkier';
+            this.EquipmentType = "NordicSkier";
             break;
           case 25:
-            this.EquipmentType = 'Trainer/StationaryBike';
+            this.EquipmentType = "Trainer/StationaryBike";
             break;
           default:
-            this.EquipmentType = 'General';
+            this.EquipmentType = "General";
             break;
         }
         let elapsedTime = data.getUint8(Messages.BUFFER_INDEX_MSG_DATA + 2);
@@ -190,17 +190,17 @@ export class FitnessEquipmentSensorState {
           switch (capStateBF & 0x03) {
             case 3: {
               this.HeartRate = heartRate;
-              this.HeartRateSource = 'HandContact';
+              this.HeartRateSource = "HandContact";
               break;
             }
             case 2: {
               this.HeartRate = heartRate;
-              this.HeartRateSource = 'EM';
+              this.HeartRateSource = "EM";
               break;
             }
             case 1: {
               this.HeartRate = heartRate;
-              this.HeartRateSource = 'ANT+';
+              this.HeartRateSource = "ANT+";
               break;
             }
             default: {
@@ -243,17 +243,17 @@ export class FitnessEquipmentSensorState {
         }
         switch ((capStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -280,17 +280,17 @@ export class FitnessEquipmentSensorState {
         }
         switch ((capStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -320,17 +320,17 @@ export class FitnessEquipmentSensorState {
         }
         switch ((capStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -375,17 +375,17 @@ export class FitnessEquipmentSensorState {
 
         switch ((flagStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -435,17 +435,17 @@ export class FitnessEquipmentSensorState {
 
         switch ((flagStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -483,17 +483,17 @@ export class FitnessEquipmentSensorState {
 
         switch ((flagStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -531,17 +531,17 @@ export class FitnessEquipmentSensorState {
 
         switch ((flagStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -579,17 +579,17 @@ export class FitnessEquipmentSensorState {
 
         switch ((flagStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -645,13 +645,13 @@ export class FitnessEquipmentSensorState {
 
         switch (flagStateBF & 0x03) {
           case 0:
-            this.TargetStatus = 'OnTarget';
+            this.TargetStatus = "OnTarget";
             break;
           case 1:
-            this.TargetStatus = 'LowSpeed';
+            this.TargetStatus = "LowSpeed";
             break;
           case 2:
-            this.TargetStatus = 'HighSpeed';
+            this.TargetStatus = "HighSpeed";
             break;
           default:
             delete this.TargetStatus;
@@ -660,17 +660,17 @@ export class FitnessEquipmentSensorState {
 
         switch ((flagStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -732,17 +732,17 @@ export class FitnessEquipmentSensorState {
 
         switch ((flagStateBF & 0x70) >> 4) {
           case 1:
-            this.State = 'OFF';
+            this.State = "OFF";
             break;
           case 2:
-            this.State = 'READY';
+            this.State = "READY";
             this.resetState();
             break;
           case 3:
-            this.State = 'IN_USE';
+            this.State = "IN_USE";
             break;
           case 4:
-            this.State = 'FINISHED';
+            this.State = "FINISHED";
             break;
           default:
             delete this.State;
@@ -796,7 +796,7 @@ export class FitnessEquipmentSensorState {
           this.PairedDevices.push({
             id: devId,
             type: devType,
-            paired: !!(chState & 0x80),
+            paired: !!(chState & 0x80)
           });
         }
 

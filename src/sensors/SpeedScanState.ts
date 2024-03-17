@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-speed/
  */
 
-import { SpeedSensorState } from './SpeedSensorState';
+import { SpeedSensorState } from "./SpeedSensorState";
 
 export class SpeedScanState extends SpeedSensorState {
   Rssi?: number;

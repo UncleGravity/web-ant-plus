@@ -23,9 +23,9 @@
  * SOFTWARE.
  */
 
-import { updateEnvironmentSensorState } from '../lib/UpdateState';
-import { AntPlusSensor } from './AntPlusSensor';
-import { EnvironmentSensorState } from './EnvironmentSensorState';
+import { updateEnvironmentSensorState } from "../lib/UpdateState";
+import { AntPlusSensor } from "./AntPlusSensor";
+import { EnvironmentSensorState } from "./EnvironmentSensorState";
 
 export class EnvironmentSensor extends AntPlusSensor {
   static deviceType = 25;
@@ -33,12 +33,12 @@ export class EnvironmentSensor extends AntPlusSensor {
   public async attachSensor(channel: any, deviceID: number) {
     await super.attach({
       channel,
-      type: 'receive',
+      type: "receive",
       deviceID,
       deviceType: EnvironmentSensor.deviceType,
       transmissionType: 0,
       timeout: 255,
-      period: 8192,
+      period: 8192
     });
     this.state = new EnvironmentSensorState(deviceID);
   }
@@ -47,7 +47,7 @@ export class EnvironmentSensor extends AntPlusSensor {
 
   protected updateState(deviceId: number, data: DataView) {
     if (!this.state) {
-      throw new Error('EnvironmentSensor: not attached');
+      throw new Error("EnvironmentSensor: not attached");
     }
     this.state.DeviceID = deviceId;
     updateEnvironmentSensorState(this, this.state, data);

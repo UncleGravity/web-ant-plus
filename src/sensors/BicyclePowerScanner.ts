@@ -3,10 +3,10 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-power/
  */
 
-import { updateBicyclePowerSensorState } from '../lib/UpdateState';
-import { AntPlusScanner } from './AntPlusScanner';
-import { BicyclePowerScanState } from './BicyclePowerScanState';
-import { BicyclePowerSensor } from './BicyclePowerSensor';
+import { updateBicyclePowerSensorState } from "../lib/UpdateState";
+import { AntPlusScanner } from "./AntPlusScanner";
+import { BicyclePowerScanState } from "./BicyclePowerScanState";
+import { BicyclePowerSensor } from "./BicyclePowerSensor";
 
 export class BicyclePowerScanner extends AntPlusScanner {
   protected deviceType() {

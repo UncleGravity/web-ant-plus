@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/ant-device-profile-muscle-oxygen/
  */
 
-import { MuscleOxygenSensorState } from './MuscleOxygenSensorState';
+import { MuscleOxygenSensorState } from "./MuscleOxygenSensorState";
 
 export class MuscleOxygenScanState extends MuscleOxygenSensorState {
   Rssi?: number;

@@ -3,8 +3,8 @@
  * Spec sheet: https://www.thisisant.com/resources/heart-rate-monitor/
  */
 
-import { Page, PageState } from '../ant';
-import { Messages } from '../Messages';
+import { Page, PageState } from "../ant";
+import { Messages } from "../Messages";
 
 export class HeartRateSensorState {
   constructor(deviceId: number) {
@@ -47,7 +47,7 @@ export class HeartRateSensorState {
 
   BatteryVoltage?: number;
 
-  BatteryStatus?: 'New' | 'Good' | 'Ok' | 'Low' | 'Critical' | 'Invalid';
+  BatteryStatus?: "New" | "Good" | "Ok" | "Low" | "Critical" | "Invalid";
 
   ReceivedAt?: number;
 
@@ -130,23 +130,23 @@ export class HeartRateSensorState {
           const batteryFlags = (batteryStatus & 0x70) >>> 4;
           switch (batteryFlags) {
             case 1:
-              this.BatteryStatus = 'New';
+              this.BatteryStatus = "New";
               break;
             case 2:
-              this.BatteryStatus = 'Good';
+              this.BatteryStatus = "Good";
               break;
             case 3:
-              this.BatteryStatus = 'Ok';
+              this.BatteryStatus = "Ok";
               break;
             case 4:
-              this.BatteryStatus = 'Low';
+              this.BatteryStatus = "Low";
               break;
             case 5:
-              this.BatteryStatus = 'Critical';
+              this.BatteryStatus = "Critical";
               break;
             default:
               this.BatteryVoltage = undefined;
-              this.BatteryStatus = 'Invalid';
+              this.BatteryStatus = "Invalid";
               break;
           }
           break;

@@ -3,10 +3,10 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-speed/
  */
 
-import { updateSpeedSensorState } from '../lib/UpdateState';
-import { AntPlusScanner } from './AntPlusScanner';
-import { SpeedScanState } from './SpeedScanState';
-import { SpeedSensor } from './SpeedSensor';
+import { updateSpeedSensorState } from "../lib/UpdateState";
+import { AntPlusScanner } from "./AntPlusScanner";
+import { SpeedScanState } from "./SpeedScanState";
+import { SpeedSensor } from "./SpeedSensor";
 
 export class SpeedScanner extends AntPlusScanner {
   protected deviceType() {

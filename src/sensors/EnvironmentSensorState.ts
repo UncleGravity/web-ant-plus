@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-import { Messages } from '../Messages';
+import { Messages } from "../Messages";
 
 export class EnvironmentSensorState {
   constructor(deviceId: number) {

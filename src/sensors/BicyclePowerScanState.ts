@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-power/
  */
 
-import { BicyclePowerSensorState } from './BicyclePowerSensorState';
+import { BicyclePowerSensorState } from "./BicyclePowerSensorState";
 
 export class BicyclePowerScanState extends BicyclePowerSensorState {
   Rssi?: number;

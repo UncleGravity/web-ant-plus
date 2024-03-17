@@ -3,10 +3,10 @@
  * Spec sheet: https://www.thisisant.com/resources/stride-based-speed-and-distance-monitor/
  */
 
-import { updateStrideSpeedDistanceSensorState } from '../lib/UpdateState';
-import { AntPlusScanner } from './AntPlusScanner';
-import { StrideSpeedDistanceScanState } from './StrideSpeedDistanceScanState';
-import { StrideSpeedDistanceSensor } from './StrideSpeedDistanceSensor';
+import { updateStrideSpeedDistanceSensorState } from "../lib/UpdateState";
+import { AntPlusScanner } from "./AntPlusScanner";
+import { StrideSpeedDistanceScanState } from "./StrideSpeedDistanceScanState";
+import { StrideSpeedDistanceSensor } from "./StrideSpeedDistanceSensor";
 
 export class StrideSpeedDistanceScanner extends AntPlusScanner {
   protected deviceType() {

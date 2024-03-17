@@ -3,10 +3,10 @@
  * Spec sheet: https://www.thisisant.com/resources/bicycle-speed-and-cadence/
  */
 
-import { updateCadenceSensorState } from '../lib/UpdateState';
-import { AntPlusScanner } from './AntPlusScanner';
-import { CadenceScanState } from './CadenceScanState';
-import { CadenceSensor } from './CadenceSensor';
+import { updateCadenceSensorState } from "../lib/UpdateState";
+import { AntPlusScanner } from "./AntPlusScanner";
+import { CadenceScanState } from "./CadenceScanState";
+import { CadenceSensor } from "./CadenceSensor";
 
 export class CadenceScanner extends AntPlusScanner {
   protected deviceType() {

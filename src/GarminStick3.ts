@@ -1,4 +1,4 @@
-import { USBDriver } from './USBDriver';
+import { USBDriver } from "./USBDriver";
 
 export class GarminStick3 extends USBDriver {
   constructor() {

@@ -3,7 +3,7 @@
  * Spec sheet: https://www.thisisant.com/resources/ant-device-profile-muscle-oxygen/
  */
 
-import { Messages } from '../Messages';
+import { Messages } from "../Messages";
 
 export class MuscleOxygenSensorState {
   constructor(deviceID: number) {
@@ -20,17 +20,17 @@ export class MuscleOxygenSensorState {
 
   MeasurementInterval?: 0.25 | 0.5 | 1 | 2;
 
-  TotalHemoglobinConcentration?: number | 'AmbientLightTooHigh' | 'Invalid';
+  TotalHemoglobinConcentration?: number | "AmbientLightTooHigh" | "Invalid";
 
   PreviousSaturatedHemoglobinPercentage?:
     | number
-    | 'AmbientLightTooHigh'
-    | 'Invalid';
+    | "AmbientLightTooHigh"
+    | "Invalid";
 
   CurrentSaturatedHemoglobinPercentage?:
     | number
-    | 'AmbientLightTooHigh'
-    | 'Invalid';
+    | "AmbientLightTooHigh"
+    | "Invalid";
 
   HwVersion?: number;
 
@@ -48,7 +48,7 @@ export class MuscleOxygenSensorState {
 
   BatteryVoltage?: number;
 
-  BatteryStatus?: 'New' | 'Good' | 'Ok' | 'Low' | 'Critical' | 'Invalid';
+  BatteryStatus?: "New" | "Good" | "Ok" | "Low" | "Critical" | "Invalid";
 
   ReceivedAt?: number;
 
@@ -104,10 +104,10 @@ export class MuscleOxygenSensorState {
 
         switch (total) {
           case 0xffe:
-            this.TotalHemoglobinConcentration = 'AmbientLightTooHigh';
+            this.TotalHemoglobinConcentration = "AmbientLightTooHigh";
             break;
           case 0xfff:
-            this.TotalHemoglobinConcentration = 'Invalid';
+            this.TotalHemoglobinConcentration = "Invalid";
             break;
           default:
             this.TotalHemoglobinConcentration = total;
@@ -115,10 +115,10 @@ export class MuscleOxygenSensorState {
 
         switch (previous) {
           case 0x3fe:
-            this.PreviousSaturatedHemoglobinPercentage = 'AmbientLightTooHigh';
+            this.PreviousSaturatedHemoglobinPercentage = "AmbientLightTooHigh";
             break;
           case 0x3ff:
-            this.PreviousSaturatedHemoglobinPercentage = 'Invalid';
+            this.PreviousSaturatedHemoglobinPercentage = "Invalid";
             break;
           default:
             this.PreviousSaturatedHemoglobinPercentage = previous;
@@ -126,10 +126,10 @@ export class MuscleOxygenSensorState {
 
         switch (current) {
           case 0x3fe:
-            this.CurrentSaturatedHemoglobinPercentage = 'AmbientLightTooHigh';
+            this.CurrentSaturatedHemoglobinPercentage = "AmbientLightTooHigh";
             break;
           case 0x3ff:
-            this.CurrentSaturatedHemoglobinPercentage = 'Invalid';
+            this.CurrentSaturatedHemoglobinPercentage = "Invalid";
             break;
           default:
             this.CurrentSaturatedHemoglobinPercentage = current;
@@ -182,23 +182,23 @@ export class MuscleOxygenSensorState {
         const batteryFlags = (batteryStatus & 0x70) >>> 4;
         switch (batteryFlags) {
           case 1:
-            this.BatteryStatus = 'New';
+            this.BatteryStatus = "New";
             break;
           case 2:
-            this.BatteryStatus = 'Good';
+            this.BatteryStatus = "Good";
             break;
           case 3:
-            this.BatteryStatus = 'Ok';
+            this.BatteryStatus = "Ok";
             break;
           case 4:
-            this.BatteryStatus = 'Low';
+            this.BatteryStatus = "Low";
             break;
           case 5:
-            this.BatteryStatus = 'Critical';
+            this.BatteryStatus = "Critical";
             break;
           default:
             this.BatteryVoltage = undefined;
-            this.BatteryStatus = 'Invalid';
+            this.BatteryStatus = "Invalid";
             break;
         }
         break;

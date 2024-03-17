@@ -3,11 +3,11 @@
  * Spec sheet: https://www.thisisant.com/resources/fitness-equipment-device/
  */
 
-import { SendCallback } from '../ant';
-import { updateFitnessEquipmentSensorState } from '../lib/UpdateState';
-import { Messages } from '../Messages';
-import { AntPlusSensor } from './AntPlusSensor';
-import { FitnessEquipmentSensorState } from './FitnessEquipmentSensorState';
+import { SendCallback } from "../ant";
+import { updateFitnessEquipmentSensorState } from "../lib/UpdateState";
+import { Messages } from "../Messages";
+import { AntPlusSensor } from "./AntPlusSensor";
+import { FitnessEquipmentSensorState } from "./FitnessEquipmentSensorState";
 
 export class FitnessEquipmentSensor extends AntPlusSensor {
   static deviceType = 0x11;
@@ -15,12 +15,12 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
   public async attachSensor(channel: number, deviceID: number): Promise<void> {
     await super.attach({
       channel,
-      type: 'receive',
+      type: "receive",
       deviceID,
       deviceType: FitnessEquipmentSensor.deviceType,
       transmissionType: 0,
       timeout: 255,
-      period: 8192,
+      period: 8192
     });
     this.state = new FitnessEquipmentSensorState(deviceID);
   }
@@ -29,7 +29,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
 
   protected updateState(deviceId: number, data: DataView) {
     if (!this.state) {
-      throw new Error('FitnessEquipmentSensor: not attached');
+      throw new Error("FitnessEquipmentSensor: not attached");
     }
     this.state.DeviceID = deviceId;
     updateFitnessEquipmentSensorState(this, this.state, data);
@@ -43,7 +43,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
     cbk?: SendCallback
   ) {
     if (this.channel === undefined) {
-      throw new Error('FitnessEquipmentSensor: not attached');
+      throw new Error("FitnessEquipmentSensor: not attached");
     }
     const m =
       userWeight === undefined
@@ -71,7 +71,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
       (df & 0xf) | ((mb & 0xf) << 4),
       (mb >> 4) & 0xf,
       d & 0xff,
-      gr & 0xff,
+      gr & 0xff
     ];
     const msg = Messages.acknowledgedData(this.channel, payload);
     this.send(msg, cbk);
@@ -109,7 +109,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
     gearRatio?: number | SendCallback,
     cbk?: SendCallback
   ) {
-    if (typeof userWeight === 'function') {
+    if (typeof userWeight === "function") {
       return this._setUserConfiguration(
         undefined,
         undefined,
@@ -118,7 +118,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
         userWeight
       );
     }
-    if (typeof bikeWeight === 'function') {
+    if (typeof bikeWeight === "function") {
       return this._setUserConfiguration(
         userWeight,
         undefined,
@@ -127,7 +127,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
         bikeWeight
       );
     }
-    if (typeof wheelDiameter === 'function') {
+    if (typeof wheelDiameter === "function") {
       return this._setUserConfiguration(
         userWeight,
         bikeWeight,
@@ -136,7 +136,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
         wheelDiameter
       );
     }
-    if (typeof gearRatio === 'function') {
+    if (typeof gearRatio === "function") {
       return this._setUserConfiguration(
         userWeight,
         bikeWeight,
@@ -156,7 +156,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
 
   public setBasicResistance(resistance: number, cbk?: SendCallback) {
     if (this.channel === undefined) {
-      throw new Error('Channel not attached');
+      throw new Error("Channel not attached");
     }
     const res = Math.max(0, Math.min(200, Math.round(resistance * 2)));
     const payload = [0x30, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, res & 0xff];
@@ -166,7 +166,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
 
   public setTargetPower(power: number, cbk?: SendCallback) {
     if (this.channel === undefined) {
-      throw new Error('Channel not attached');
+      throw new Error("Channel not attached");
     }
     const p = Math.max(0, Math.min(4000, Math.round(power * 4)));
     const payload = [
@@ -177,7 +177,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
       0xff,
       0xff,
       p & 0xff,
-      (p >> 8) & 0xff,
+      (p >> 8) & 0xff
     ];
     const msg = Messages.acknowledgedData(this.channel, payload);
     this.send(msg, cbk);
@@ -190,7 +190,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
     cbk?: SendCallback
   ) {
     if (this.channel === undefined) {
-      throw new Error('Channel not attached');
+      throw new Error("Channel not attached");
     }
     const wc =
       windCoeff === undefined
@@ -212,7 +212,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
       0xff,
       wc & 0xff,
       ws & 0xff,
-      df & 0xff,
+      df & 0xff
     ];
     const msg = Messages.acknowledgedData(this.channel, payload);
     this.send(msg, cbk);
@@ -241,7 +241,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
     draftFactor?: number | SendCallback,
     cbk?: SendCallback
   ) {
-    if (typeof windCoeff === 'function') {
+    if (typeof windCoeff === "function") {
       return this._setWindResistance(
         undefined,
         undefined,
@@ -249,7 +249,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
         windCoeff
       );
     }
-    if (typeof windSpeed === 'function') {
+    if (typeof windSpeed === "function") {
       return this._setWindResistance(
         windCoeff,
         undefined,
@@ -257,7 +257,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
         windSpeed
       );
     }
-    if (typeof draftFactor === 'function') {
+    if (typeof draftFactor === "function") {
       return this._setWindResistance(
         windCoeff,
         windSpeed,
@@ -274,7 +274,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
     cbk?: SendCallback
   ) {
     if (this.channel === undefined) {
-      throw new Error('Channel not attached');
+      throw new Error("Channel not attached");
     }
     const s =
       slope === undefined
@@ -295,7 +295,7 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
       0xff,
       s & 0xff,
       (s >> 8) & 0xff,
-      rr & 0xff,
+      rr & 0xff
     ];
     const msg = Messages.acknowledgedData(this.channel, payload);
     this.send(msg, cbk);
@@ -316,10 +316,10 @@ export class FitnessEquipmentSensor extends AntPlusSensor {
     rollingResistanceCoeff?: number | SendCallback,
     cbk?: SendCallback
   ) {
-    if (typeof slope === 'function') {
+    if (typeof slope === "function") {
       return this._setTrackResistance(undefined, undefined, slope);
     }
-    if (typeof rollingResistanceCoeff === 'function') {
+    if (typeof rollingResistanceCoeff === "function") {
       return this._setTrackResistance(slope, undefined, rollingResistanceCoeff);
     }
     return this._setTrackResistance(slope, rollingResistanceCoeff, cbk);

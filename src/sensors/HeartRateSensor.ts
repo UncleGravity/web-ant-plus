@@ -3,10 +3,10 @@
  * Spec sheet: https://www.thisisant.com/resources/heart-rate-monitor/
  */
 
-import { Page, PageState } from '../ant';
-import { updateHeartRateSensorState } from '../lib/UpdateState';
-import { AntPlusSensor } from './AntPlusSensor';
-import { HeartRateSensorState } from './HeartRateSensorState';
+import { Page, PageState } from "../ant";
+import { updateHeartRateSensorState } from "../lib/UpdateState";
+import { AntPlusSensor } from "./AntPlusSensor";
+import { HeartRateSensorState } from "./HeartRateSensorState";
 
 export class HeartRateSensor extends AntPlusSensor {
   static deviceType = 120;
@@ -14,12 +14,12 @@ export class HeartRateSensor extends AntPlusSensor {
   public async attachSensor(channel: number, deviceID: number) {
     await super.attach({
       channel,
-      type: 'receive',
+      type: "receive",
       deviceID,
       deviceType: HeartRateSensor.deviceType,
       transmissionType: 0,
       timeout: 255,
-      period: 8070,
+      period: 8070
     });
     this.state = new HeartRateSensorState(deviceID);
   }
@@ -28,12 +28,12 @@ export class HeartRateSensor extends AntPlusSensor {
 
   private page: Page = {
     oldPage: -1,
-    pageState: PageState.INIT_PAGE,
+    pageState: PageState.INIT_PAGE
   };
 
   protected updateState(deviceId: number, data: DataView) {
     if (!this.state) {
-      throw new Error('HeartRateSensor: not attached');
+      throw new Error("HeartRateSensor: not attached");
     }
     this.state.DeviceID = deviceId;
     updateHeartRateSensorState(this, this.state, data, this.page);

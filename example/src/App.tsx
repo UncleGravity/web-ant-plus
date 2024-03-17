@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   BicyclePowerSensor,
   GarminStick3,
   HeartRateSensor,
-  SpeedCadenceSensor,
-} from '../../src';
-import { Constants } from '../../src/Constants';
-import { GarminStick2 } from '../../src/GarminStick2';
-import { Messages } from '../../src/Messages';
-import { BicyclePowerSensorState } from '../../src/sensors/BicyclePowerSensorState';
-import { HeartRateSensorState } from '../../src/sensors/HeartRateSensorState';
-import { SpeedCadenceSensorState } from '../../src/sensors/SpeedCadenceSensorState';
-import './App.css';
-import reactLogo from './assets/react.svg';
+  SpeedCadenceSensor
+} from "../../src";
+import { Constants } from "../../src/Constants";
+import { GarminStick2 } from "../../src/GarminStick2";
+import { Messages } from "../../src/Messages";
+import { BicyclePowerSensorState } from "../../src/sensors/BicyclePowerSensorState";
+import { HeartRateSensorState } from "../../src/sensors/HeartRateSensorState";
+import { SpeedCadenceSensorState } from "../../src/sensors/SpeedCadenceSensorState";
+import "./App.css";
+import reactLogo from "./assets/react.svg";
 
 // choose the stick type you want to use
 const STICK: typeof GarminStick2 | typeof GarminStick3 = GarminStick2;
@@ -41,40 +41,40 @@ function App() {
       return;
     }
     if (heartRateSensor) {
-      heartRateSensor.on('attached', () =>
-        console.log('heartRateSensor attached')
+      heartRateSensor.on("attached", () =>
+        console.log("heartRateSensor attached")
       );
-      heartRateSensor.on('detached', () =>
-        console.log('heartRateSensor detached')
+      heartRateSensor.on("detached", () =>
+        console.log("heartRateSensor detached")
       );
 
-      heartRateSensor.on('hbData', onHeartRateData);
+      heartRateSensor.on("hbData", onHeartRateData);
     } else {
       setHeartRateSensor(new HeartRateSensor(stick));
     }
     if (speedCadenceSensor) {
-      speedCadenceSensor.on('attached', () =>
-        console.log('speedCadenceSensor attached')
+      speedCadenceSensor.on("attached", () =>
+        console.log("speedCadenceSensor attached")
       );
-      speedCadenceSensor.on('detached', () =>
-        console.log('speedCadenceSensor detached')
+      speedCadenceSensor.on("detached", () =>
+        console.log("speedCadenceSensor detached")
       );
       speedCadenceSensor.setWheelCircumference(2.12);
 
-      speedCadenceSensor.on('speedData', onSpeedData);
+      speedCadenceSensor.on("speedData", onSpeedData);
     } else {
       setSpeedCadenceSensor(new SpeedCadenceSensor(stick));
     }
 
     if (bicyclePowerSensor) {
-      bicyclePowerSensor.on('attached', () =>
-        console.log('bicyclePowerSensor attached')
+      bicyclePowerSensor.on("attached", () =>
+        console.log("bicyclePowerSensor attached")
       );
-      bicyclePowerSensor.on('detached', () =>
-        console.log('bicyclePowerSensor detached')
+      bicyclePowerSensor.on("detached", () =>
+        console.log("bicyclePowerSensor detached")
       );
 
-      bicyclePowerSensor.on('powerData', onBicyclePowerData);
+      bicyclePowerSensor.on("powerData", onBicyclePowerData);
     } else {
       setBicyclePowerSensor(new BicyclePowerSensor(stick));
     }
@@ -107,14 +107,14 @@ function App() {
   };
 
   async function handleClickSearchDevice() {
-    console.log('searching...');
+    console.log("searching...");
     try {
       if (!stick) {
-        throw new Error('stick not found');
+        throw new Error("stick not found");
       }
-      stick.once('startup', async () => {
+      stick.once("startup", async () => {
         try {
-          console.log('Stick startup', stick);
+          console.log("Stick startup", stick);
           heartRateSensor ? await heartRateSensor.attachSensor(0, 0) : null;
           speedCadenceSensor
             ? await speedCadenceSensor.attachSensor(1, 0)
@@ -127,8 +127,8 @@ function App() {
           throw error;
         }
       });
-      stick.once('shutdown', async () => {
-        console.log('Stick shutdown');
+      stick.once("shutdown", async () => {
+        console.log("Stick shutdown");
       });
       await stick.open();
     } catch (error) {
@@ -137,12 +137,12 @@ function App() {
   }
 
   function handleClickClose() {
-    console.log('closing...');
+    console.log("closing...");
     try {
       (async () => {
         const close = await stick?.reset();
         await stick?.close();
-        console.log('close', close);
+        console.log("close", close);
       })();
       setConnected(false);
     } catch (error) {
@@ -173,40 +173,40 @@ function App() {
   }, 0);
 
   return (
-    <div className='App'>
+    <div className="App">
       <div>
-        <a href='https://reactjs.org' target='_blank'>
+        <a href="https://reactjs.org" target="_blank">
           <img
             src={reactLogo}
-            className='logo react'
-            alt='React logo'
+            className="logo react"
+            alt="React logo"
             style={{
               transform: `rotate(${sumCalculatedCadence}deg) scale(${
                 newestPowerState?.Power ? newestPowerState.Power / 200 : 1
-              })`,
+              })`
             }}
           />
         </a>
       </div>
       <h1
         style={{
-          display: 'flex',
-          alignItems: 'start',
+          display: "flex",
+          alignItems: "start"
         }}
       >
         WebUSB ANT+
         <span
           style={{
-            fontSize: '0.5em',
+            fontSize: "0.5em"
           }}
         >
           ®
         </span>
       </h1>
-      <div className='card'>
+      <div className="card">
         {connected ? (
           <>
-            <button type='button' onClick={handleClickClose}>
+            <button type="button" onClick={handleClickClose}>
               Disconnect
             </button>
 
@@ -216,17 +216,17 @@ function App() {
               </dt>
               <dd
                 style={{
-                  textAlign: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: 'auto',
+                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "auto"
                 }}
               >
                 {newestHRState?.ComputedHeartRate}
                 <span
                   style={{
-                    fontSize: '0.5em',
+                    fontSize: "0.5em"
                   }}
                 >
                   bpm
@@ -237,11 +237,11 @@ function App() {
               </dt>
               <dd
                 style={{
-                  textAlign: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: 'auto',
+                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "auto"
                 }}
               >
                 {meterPerSecToKmPerHour(
@@ -249,7 +249,7 @@ function App() {
                 ).toFixed(1)}
                 <span
                   style={{
-                    fontSize: '0.5em',
+                    fontSize: "0.5em"
                   }}
                 >
                   km/h
@@ -260,17 +260,17 @@ function App() {
               </dt>
               <dd
                 style={{
-                  textAlign: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: 'auto',
+                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "auto"
                 }}
               >
                 {newestPowerState?.Cadence}
                 <span
                   style={{
-                    fontSize: '0.5em',
+                    fontSize: "0.5em"
                   }}
                 >
                   rpm
@@ -281,17 +281,17 @@ function App() {
               </dt>
               <dd
                 style={{
-                  textAlign: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: 'auto',
+                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "auto"
                 }}
               >
                 {newestPowerState?.Power?.toFixed(1)}
                 <span
                   style={{
-                    fontSize: '0.5em',
+                    fontSize: "0.5em"
                   }}
                 >
                   w
@@ -300,7 +300,7 @@ function App() {
             </dl>
           </>
         ) : (
-          <button type='button' onClick={handleClickSearchDevice}>
+          <button type="button" onClick={handleClickSearchDevice}>
             Search ANT+ Receiver
           </button>
         )}

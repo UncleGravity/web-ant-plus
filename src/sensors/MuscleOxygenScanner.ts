@@ -3,10 +3,10 @@
  * Spec sheet: https://www.thisisant.com/resources/ant-device-profile-muscle-oxygen/
  */
 
-import { updateMuscleOxygenSensorState } from '../lib/UpdateState';
-import { AntPlusScanner } from './AntPlusScanner';
-import { MuscleOxygenScanState } from './MuscleOxygenScanState';
-import { MuscleOxygenSensor } from './MuscleOxygenSensor';
+import { updateMuscleOxygenSensorState } from "../lib/UpdateState";
+import { AntPlusScanner } from "./AntPlusScanner";
+import { MuscleOxygenScanState } from "./MuscleOxygenScanState";
+import { MuscleOxygenSensor } from "./MuscleOxygenSensor";
 
 export class MuscleOxygenScanner extends AntPlusScanner {
   protected deviceType() {
