@@ -1,9 +1,25 @@
 import { Constants } from "./Constants";
+import {
+  CancellationError,
+  CancellationToken,
+  ICancellationToken
+} from "./ICancellationToken";
 import { EventEmitter } from "./lib/EventEmitter";
 import { Messages } from "./Messages";
 import { BaseSensor } from "./sensors/BaseSensor";
 
+export interface SupportedVendors {
+  vendor: number;
+  product: number;
+  name: string;
+}
+
 export class USBDriver extends EventEmitter {
+  static supportedDevices: Array<SupportedVendors> = [
+    { vendor: 0x0fcf, product: 0x1008, name: "GarminStick2" },
+    { vendor: 0x0fcf, product: 0x1009, name: "GarminStick3" }
+  ];
+
   private deviceInUse: USBDevice[] = [];
   private attachedSensors: BaseSensor[] = [];
   private device: USBDevice | undefined;
@@ -12,6 +28,7 @@ export class USBDriver extends EventEmitter {
   private leftover: DataView | undefined;
   private outEndpoint: USBEndpoint | undefined;
   private usedChannels: number = 0;
+  private readInCancellationToken: ICancellationToken = new CancellationToken();
 
   maxChannels: number = 0;
   canScan: boolean = false;
@@ -22,6 +39,68 @@ export class USBDriver extends EventEmitter {
   ) {
     super();
     this.setMaxListeners(50);
+  }
+
+  /** Creates a USBDriver instance from an already paired (and permitted) device
+   * @Note If more than one ANT+ stick was paired the USBDriver instance will be created from the first one.
+   */
+  public static async createFromPairedDevice(): Promise<USBDriver | undefined> {
+    const device = (await this.getPairedDevices())?.[0];
+
+    if (device !== undefined) {
+      const driverInstance = new USBDriver(device.vendorId, device.productId);
+      driverInstance.device = device;
+
+      return driverInstance;
+    }
+
+    return undefined;
+  }
+
+  /** Starts the paring process by opening the dialog box, once USBDevice is connected it will return a USBDriver instance
+   * @Note This method filters the usb devices shown in the dialog box i.e. only ANT+ sticks will be shown.
+   */
+  public static async createFromNewDevice(): Promise<USBDriver> {
+    const device = await navigator.usb.requestDevice({
+      filters: this.supportedDevices.map(
+        (
+          supportedDevice: SupportedVendors
+        ): {
+          vendorId: number;
+          productId: number;
+        } => ({
+          vendorId: supportedDevice.vendor,
+          productId: supportedDevice.product
+        })
+      )
+    });
+
+    const driverInstance = new USBDriver(device.vendorId, device.productId);
+    driverInstance.device = device;
+
+    return driverInstance;
+  }
+
+  /** Creates a USBDriver instance from the specified USBDevice
+   * @Note This method does not check if the provided USBDevice is in fact an ANT+ stick.
+   */
+  public static createFromDevice(device: USBDevice): USBDriver {
+    const driverInstance = new USBDriver(device.vendorId, device.productId);
+    driverInstance.device = device;
+
+    return driverInstance;
+  }
+
+  /** Gets an array of ANT+ usb sticks that has been previously paired and hence have permission to connect (if any) */
+  public static async getPairedDevices(): Promise<Array<USBDevice>> {
+    const devices = await navigator.usb.getDevices();
+    return devices.filter(
+      (device: USBDevice): boolean =>
+        ((device.vendorId === this.supportedDevices[0].vendor ||
+          device.vendorId === this.supportedDevices[1].vendor) &&
+          device.productId === this.supportedDevices[0].product) ||
+        device.productId === this.supportedDevices[1].product
+    );
   }
 
   private async getDevice() {
@@ -37,7 +116,9 @@ export class USBDriver extends EventEmitter {
   }
 
   public async open(): Promise<USBDevice | undefined> {
-    this.device = await this.getDevice();
+    if (this.device === undefined) {
+      this.device = await this.getDevice();
+    }
     try {
       if (this.device === undefined) {
         throw new Error("No device found");
@@ -74,6 +155,7 @@ export class USBDriver extends EventEmitter {
       }
 
       try {
+        this.readInCancellationToken.cancelled();
         const result = await this.device.transferIn(
           this.inEndpoint.endpointNumber,
           this.inEndpoint.packetSize
@@ -117,7 +199,9 @@ export class USBDriver extends EventEmitter {
         }
         await readInEndPoint();
       } catch (error) {
-        throw error;
+        if (!(error instanceof CancellationError)) {
+          throw error;
+        }
       }
     };
 
@@ -126,10 +210,11 @@ export class USBDriver extends EventEmitter {
   }
 
   public async close() {
+    this.readInCancellationToken?.cancel();
     await this.reset();
     this.interface = undefined;
     if (!this.device) return;
-    this.device.close();
+    await this.device.close();
     this.emit("shutdown");
     const devIdx = this.deviceInUse.indexOf(this.device);
     if (devIdx >= 0) {
@@ -141,7 +226,6 @@ export class USBDriver extends EventEmitter {
 
   public async reset() {
     await this.detach_all();
-    await this.device?.reset();
     this.maxChannels = 0;
     this.usedChannels = 0;
     await this.write(Messages.resetSystem());
