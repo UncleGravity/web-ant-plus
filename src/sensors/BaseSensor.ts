@@ -279,9 +279,18 @@ export abstract class BaseSensor extends EventEmitter {
   protected async send(data: DataView, cbk?: SendCallback) {
     this.msgQueue.push({ msg: data, cbk });
     console.log("BaseSensor msgQueue", this.msgQueue.length);
-    if (this.msgQueue.length === 1) {
-      await this.write(data);
-      this.msgQueue.shift(); // DANGER: This is probably the wrong solution, it might break the queue.  Only tested for TX
+
+    // Process the entire message queue
+    // DANGER: This is probably the wrong solution, it might break the queue.
+    // DANGER: It's the only way to found to make TX work.
+    // DANGER: Otherwise if would only send a single message and go kaput.
+    while (this.msgQueue.length > 0) {
+      const item = this.msgQueue[0]; // Get the first item in the queue
+      await this.write(item.msg); // Send it
+      if (item.cbk) {
+        item.cbk(true); // If there's a callback, call it with true indicating success
+      }
+      this.msgQueue.shift(); // Remove the item from the queue after it's processed
     }
   }
 }
