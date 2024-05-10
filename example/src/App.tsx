@@ -1,136 +1,116 @@
 import { useEffect, useState } from "react";
 import {
-  BicyclePowerSensor,
   GarminStick3,
-  HeartRateSensor,
-  SpeedCadenceSensor
+  HeartRateSensorTx,
+  SpeedSensorTx,
+  CadenceSensorTx,
+  BicyclePowerSensorTx
 } from "../../src";
 import { Constants } from "../../src/Constants";
 import { GarminStick2 } from "../../src/GarminStick2";
 import { Messages } from "../../src/Messages";
-import { BicyclePowerSensorState } from "../../src/sensors/BicyclePowerSensorState";
-import { HeartRateSensorState } from "../../src/sensors/HeartRateSensorState";
-import { SpeedCadenceSensorState } from "../../src/sensors/SpeedCadenceSensorState";
 import "./App.css";
 import reactLogo from "./assets/react.svg";
 
 // choose the stick type you want to use
-const STICK: typeof GarminStick2 | typeof GarminStick3 = GarminStick2;
+const STICK: typeof GarminStick2 | typeof GarminStick3 = GarminStick3;
 
 function App() {
   const [stick, setStick] = useState<GarminStick2 | GarminStick3>();
-  const [heartRateSensor, setHeartRateSensor] = useState<HeartRateSensor>();
-  const [speedCadenceSensor, setSpeedCadenceSensor] =
-    useState<SpeedCadenceSensor>();
-  const [bicyclePowerSensor, setBicyclePowerSensor] =
-    useState<BicyclePowerSensor>();
-
+  const [transmitHRM, setTransmitHRM] = useState<HeartRateSensorTx>();
+  const [transmitSpeed, setTransmitSpeed] = useState<SpeedSensorTx>();
+  const [transmitCadence, setTransmitCadence] = useState<CadenceSensorTx>();
+  const [transmitPower, setTransmitPower] = useState<BicyclePowerSensorTx>();
   const [connected, setConnected] = useState(stick?.isScanning());
-  const [heartbeat, setHeartbeat] = useState(0);
-  const [hrState, setHRState] = useState<Array<HeartRateSensorState>>([]);
-  const [speedState, setSpeedState] = useState<Array<SpeedCadenceSensorState>>(
-    []
-  );
-  const [powerState, setPowerState] = useState<Array<BicyclePowerSensorState>>(
-    []
-  );
 
   useEffect(() => {
     if (!stick) {
       setStick(new STICK());
       return;
-    }
-    if (heartRateSensor) {
-      heartRateSensor.on("attached", () =>
-        console.log("heartRateSensor attached")
-      );
-      heartRateSensor.on("detached", () =>
-        console.log("heartRateSensor detached")
-      );
-
-      heartRateSensor.on("hbData", onHeartRateData);
     } else {
-      setHeartRateSensor(new HeartRateSensor(stick));
+      console.log("stick available: ", stick);
     }
-    if (speedCadenceSensor) {
-      speedCadenceSensor.on("attached", () =>
-        console.log("speedCadenceSensor attached")
-      );
-      speedCadenceSensor.on("detached", () =>
-        console.log("speedCadenceSensor detached")
-      );
-      speedCadenceSensor.setWheelCircumference(2.12);
 
-      speedCadenceSensor.on("speedData", onSpeedData);
+    // START HEART RATE SENSOR
+    if (transmitHRM) {
+      transmitHRM.on("attached", () => {
+        console.log("transmitHRM attached")
+        transmitHRM.start(); /////////////////// HRM GO
+      });
+      transmitHRM.on("detached", () =>
+        console.log("transmitHRM detached")
+      );
     } else {
-      setSpeedCadenceSensor(new SpeedCadenceSensor(stick));
+      console.log("setting transmitHRM");
+      setTransmitHRM(new HeartRateSensorTx(stick));
     }
 
-    if (bicyclePowerSensor) {
-      bicyclePowerSensor.on("attached", () =>
-        console.log("bicyclePowerSensor attached")
-      );
-      bicyclePowerSensor.on("detached", () =>
-        console.log("bicyclePowerSensor detached")
-      );
+    // START SPEED SENSOR
+    if (transmitSpeed) {
+      transmitSpeed.on("attached", () => {
+        console.log("transmitSpeed attached")
+        transmitSpeed.start(); /////////////////// SPEED GO
+      });
 
-      bicyclePowerSensor.on("powerData", onBicyclePowerData);
+      transmitSpeed.on("detached", () =>
+        console.log("transmitSpeed detached")
+      );
     } else {
-      setBicyclePowerSensor(new BicyclePowerSensor(stick));
+      setTransmitSpeed(new SpeedSensorTx(stick));
     }
-  }, [stick, heartRateSensor, speedCadenceSensor, bicyclePowerSensor]);
 
-  useEffect(() => {
-    if (heartbeat > 0) {
-      return;
+    // START CADENCE SENSOR
+    if (transmitCadence) {
+      transmitCadence.on("attached", () => {
+        console.log("transmitCadence attached")
+        transmitCadence.start(); /////////////////// CADENCE GO
+      });
+    } else {
+      setTransmitCadence(new CadenceSensorTx(stick));
     }
-    stick?.write(Messages.requestMessage(0, Constants.MESSAGE_TX_SYNC));
-    setHeartbeat(0);
-  }, [heartbeat]);
 
-  const onHeartRateData = (state: HeartRateSensorState) => {
-    console.log(state);
-    setHRState((prev) => [...prev, state]);
-    setHeartbeat((prev) => prev + 1);
-  };
+    // START BICYCLE POWER SENSOR
+    if (transmitPower) {
+      transmitPower.on("attached", () => {
+        console.log("transmitPower attached")
+        transmitPower.start(); /////////////////// POWER GO
+      });
+    } else {
+      setTransmitPower(new BicyclePowerSensorTx(stick));
+    }
 
-  const onSpeedData = (state: SpeedCadenceSensorState) => {
-    console.log(state);
-    setSpeedState((prev) => [...prev, state]);
-    setHeartbeat((prev) => prev + 1);
-  };
-
-  const onBicyclePowerData = (state: BicyclePowerSensorState) => {
-    console.log(state);
-    setPowerState((prev) => [...prev, state]);
-    setHeartbeat((prev) => prev + 1);
-  };
+  }, [stick, transmitHRM, transmitSpeed, transmitCadence]);
 
   async function handleClickSearchDevice() {
     console.log("searching...");
+
     try {
       if (!stick) {
         throw new Error("stick not found");
+      } else {
+        console.log("stick found, continuing search");
+        console.log(stick);
       }
+
       stick.once("startup", async () => {
         try {
           console.log("Stick startup", stick);
-          heartRateSensor ? await heartRateSensor.attachSensor(0, 0) : null;
-          speedCadenceSensor
-            ? await speedCadenceSensor.attachSensor(1, 0)
-            : null;
-          bicyclePowerSensor
-            ? await bicyclePowerSensor.attachSensor(2, 0)
-            : null;
+          transmitHRM ? await transmitHRM.attachSensor(1, 0xdead) : null;
+          transmitSpeed ? await transmitSpeed.attachSensor(5, 0xdaad) : null;
+          transmitCadence ? await transmitCadence.attachSensor(4, 0xf00d) : null;
+          transmitPower ? await transmitPower.attachSensor(0, 0xbeef) : null;
           setConnected(true);
         } catch (error) {
           throw error;
         }
       });
+
       stick.once("shutdown", async () => {
         console.log("Stick shutdown");
       });
+
       await stick.open();
+
     } catch (error) {
       console.error(error);
     }
@@ -150,28 +130,6 @@ function App() {
     }
   }
 
-  function meterPerSecToKmPerHour(mps: number) {
-    return mps * 3.6;
-  }
-
-  const newestHRState = hrState.length
-    ? hrState[hrState.length - 1]
-    : undefined;
-  const newestSpeedState = speedState.length
-    ? speedState[speedState.length - 1]
-    : undefined;
-
-  const newestPowerState = powerState.length
-    ? powerState[powerState.length - 1]
-    : undefined;
-
-  const sumCalculatedCadence = powerState.reduce<number>((sum, state) => {
-    if (state && state.Cadence) {
-      return sum + state.Cadence / 3;
-    }
-    return sum;
-  }, 0);
-
   return (
     <div className="App">
       <div>
@@ -180,11 +138,6 @@ function App() {
             src={reactLogo}
             className="logo react"
             alt="React logo"
-            style={{
-              transform: `rotate(${sumCalculatedCadence}deg) scale(${
-                newestPowerState?.Power ? newestPowerState.Power / 200 : 1
-              })`
-            }}
           />
         </a>
       </div>
@@ -209,95 +162,6 @@ function App() {
             <button type="button" onClick={handleClickClose}>
               Disconnect
             </button>
-
-            <dl>
-              <dt>
-                <b>Heart Rate</b>
-              </dt>
-              <dd
-                style={{
-                  textAlign: "center",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "auto"
-                }}
-              >
-                {newestHRState?.ComputedHeartRate}
-                <span
-                  style={{
-                    fontSize: "0.5em"
-                  }}
-                >
-                  bpm
-                </span>
-              </dd>
-              <dt>
-                <b>CalculatedSpeed</b>
-              </dt>
-              <dd
-                style={{
-                  textAlign: "center",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "auto"
-                }}
-              >
-                {meterPerSecToKmPerHour(
-                  newestSpeedState?.CalculatedSpeed || 0
-                ).toFixed(1)}
-                <span
-                  style={{
-                    fontSize: "0.5em"
-                  }}
-                >
-                  km/h
-                </span>
-              </dd>
-              <dt>
-                <b>Cadence</b>
-              </dt>
-              <dd
-                style={{
-                  textAlign: "center",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "auto"
-                }}
-              >
-                {newestPowerState?.Cadence}
-                <span
-                  style={{
-                    fontSize: "0.5em"
-                  }}
-                >
-                  rpm
-                </span>
-              </dd>
-              <dt>
-                <b>Power</b>
-              </dt>
-              <dd
-                style={{
-                  textAlign: "center",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "auto"
-                }}
-              >
-                {newestPowerState?.Power?.toFixed(1)}
-                <span
-                  style={{
-                    fontSize: "0.5em"
-                  }}
-                >
-                  w
-                </span>
-              </dd>
-            </dl>
           </>
         ) : (
           <button type="button" onClick={handleClickSearchDevice}>

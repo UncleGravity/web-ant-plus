@@ -149,9 +149,15 @@ export abstract class BaseSensor extends EventEmitter {
 
     const mc = this.msgQueue.shift();
     const onStatus = async (status: { msg: number; code: number }) => {
+      console.log("onStatus", {
+        msg: `0x${status.msg.toString(16)}`,
+        code: `0x${status.code.toString(16)}`
+      });
       switch (status.msg) {
         case Constants.MESSAGE_RF:
           switch (status.code) {
+            case Constants.EVENT_TX:
+            // console.log("EVENT_TX");
             case Constants.EVENT_CHANNEL_CLOSED:
             case Constants.EVENT_RX_FAIL_GO_TO_SEARCH:
               await this.write(Messages.unassignChannel(channel));
@@ -238,6 +244,12 @@ export abstract class BaseSensor extends EventEmitter {
   }
 
   protected async write(data: DataView) {
+    console.log(
+      "BaseSensor send",
+      Array.from(new Uint8Array(data.buffer)).map((b) =>
+        b.toString(16).padStart(2, "0")
+      )
+    );
     await this.stick.write(data);
   }
 
@@ -266,8 +278,10 @@ export abstract class BaseSensor extends EventEmitter {
 
   protected async send(data: DataView, cbk?: SendCallback) {
     this.msgQueue.push({ msg: data, cbk });
+    console.log("BaseSensor msgQueue", this.msgQueue.length);
     if (this.msgQueue.length === 1) {
       await this.write(data);
+      this.msgQueue.shift(); // DANGER: This is probably the wrong solution, it might break the queue.  Only tested for TX
     }
   }
 }

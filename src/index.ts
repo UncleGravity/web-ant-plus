@@ -44,3 +44,9 @@ export { StrideSpeedDistanceScanner } from "./sensors/StrideSpeedDistanceScanner
 export { StrideSpeedDistanceScanState } from "./sensors/StrideSpeedDistanceScanState";
 export { StrideSpeedDistanceSensor } from "./sensors/StrideSpeedDistanceSensor";
 export { StrideSpeedDistanceSensorState } from "./sensors/StrideSpeedDistanceSensorState";
+
+// Transmit
+export { HeartRateSensorTx } from "./transmit/HeartRateSensorTx";
+export { SpeedSensorTx } from "./transmit/SpeedSensorTx";
+export { CadenceSensorTx } from "./transmit/CadenceSensorTx";
+export { BicyclePowerSensorTx } from "./transmit/BicyclePowerSensorTx";
